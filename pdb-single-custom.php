@@ -30,7 +30,26 @@ if ( $this->participant_id > 0 ) :
       
       <span class="<?php echo $this->field->name.' '.$empty_class?> flex-label"><?php $this->field->print_label() ?></span>
       
-      <span class="<?php echo $this->field->name.' '.$empty_class?> flex-value"><?php $this->field->print_value() ?></span>
+      <span class="<?php echo $this->field->name.' '.$empty_class?> flex-value">
+        <?php 
+        //if présence_sur_les_marchés not empty, we add a link to the marchés
+        if ($this->field->name == "présence_sur_les_marchés" && $empty_class!= 'blank-field') {
+            $marches = $this->field->get_value('présence_sur_les_marchés')['other'];
+            $marches = explode(', ', $marches);
+            foreach($marches as $key => $marche) {
+                $filter = 'titre=' . $marche;
+                $id = Participants_Db::get_id_list(array('filter' => $filter))[0];
+                $link = esc_url(add_query_arg('pdb', $id, strtok($_SERVER["REQUEST_URI"], '?')));
+                $marches[$key] = '<a href="' . $link . '">' . $marche . '</a>';
+            }
+            $marches = implode(', ', $marches);
+            echo $marches;
+        }
+        else {
+            $this->field->print_value();
+        } 
+        ?>
+      </span>
     
     </div>
   
@@ -41,6 +60,7 @@ if ( $this->participant_id > 0 ) :
   <?php endwhile; // end of the groups loop ?>
 
   <?php 
+  //specific field for the categorie "Marchés"
   if (Participants_Db::get_participant($this->participant_id)['categorie'] == 'Marchés' ) {
       $titre = Participants_Db::get_participant($this->participant_id)['titre'];
       $filter = 'présence_sur_les_marchés=*' . $titre . '*';
