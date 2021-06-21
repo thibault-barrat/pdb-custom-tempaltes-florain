@@ -50,11 +50,10 @@ if ( $this->participant_id > 0 ) :
           foreach ($acteurs as $acteur) {
               $id = $acteur->id;
               $titre = $acteur->titre;
-              $link = add_query_arg('pdb', $id, strtok($_SERVER["REQUEST_URI"], '?'));
+              $link = esc_url(add_query_arg('pdb', $id, strtok($_SERVER["REQUEST_URI"], '?')));
               $acteursPresents .= '<a href="' . $link . '">' . $titre . '</a>, '; 
           }
           $acteursPresents = trim($acteursPresents, ', ');
-          echo $_SERVER['REQUEST_URI'];
           echo '<div class="pdb-acteurs_presents text-area  flex-field">
       
           <span class="acteurs_presents  flex-label">Acteurs présents</span>

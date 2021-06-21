@@ -2,8 +2,6 @@ Templates custom pour le Florain du plugin Participants database (https://xnau.c
 =================
 
 ### Liste des templates
-#### pdb-list-custom
-Affichage de la liste des participants avec un champ de filtre supplémentaire.
 
 #### pdb-single-custom
 Affichage détaillé d'un participant avec la gestion des acteurs présents sur un marché.
