@@ -64,14 +64,17 @@ if ( $this->participant_id > 0 ) :
   if (Participants_Db::get_participant($this->participant_id)['categorie'] == 'Marchés' ) {
       $titre = Participants_Db::get_participant($this->participant_id)['titre'];
       $filter = 'présence_sur_les_marchés=*' . $titre . '*';
-      $acteurs = Participants_Db::get_participant_list( array('fields' => 'titre, categorie','filter' => $filter ) );
+      $acteurs = Participants_Db::get_participant_list( array('fields' => 'titre, categorie, inactif','filter' => $filter ) );
       if (!empty($acteurs)) {
           $acteursPresents = '';
           foreach ($acteurs as $acteur) {
               $id = $acteur->id;
               $titre = $acteur->titre;
-              $link = esc_url(add_query_arg('pdb', $id, strtok($_SERVER["REQUEST_URI"], '?')));
-              $acteursPresents .= '<a href="' . $link . '">' . $titre . '</a>, '; 
+              $inactif = $acteur->inactif;
+              if($inactif != 'true') {
+                $link = esc_url(add_query_arg('pdb', $id, strtok($_SERVER["REQUEST_URI"], '?')));
+                $acteursPresents .= '<a href="' . $link . '">' . $titre . '</a>, '; 
+              }             
           }
           $acteursPresents = trim($acteursPresents, ', ');
           echo '<div class="pdb-acteurs_presents text-area  flex-field">
