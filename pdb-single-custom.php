@@ -6,10 +6,23 @@
  * custom emplate for displaying a single record with a custom SQL query
  *
  */
+
 if ( $this->participant_id > 0 ) :
 ?>
 
 <div class="wrap <?php echo $this->wrap_class ?> pdb-single-flex">
+
+<?php
+//Links to previous and next participants
+$liste = Participants_Db::get_id_list( array( 'orderby' => 'id', 'filter' => 'inactif!=true' ) );
+$idPrevious = $liste[array_search($this->participant_id, $liste) + 1];
+$idNext = $liste[array_search($this->participant_id, $liste) - 1]; 
+$linkPrevious = esc_url(add_query_arg('pdb', $idPrevious, strtok($_SERVER["REQUEST_URI"], '?')));
+$linkNext = esc_url(add_query_arg('pdb', $idNext, strtok($_SERVER["REQUEST_URI"], '?')));
+
+?>
+<div class="acteur-nav acteur-nav-prev"><a href="<?php echo $linkPrevious ?>"><i class="fas fa-chevron-circle-left"></i><p>Précédent</p></a></div>
+<div class="acteur-nav acteur-nav-next"><a href="<?php echo $linkNext ?>"><i class="fas fa-chevron-circle-right"></i><p>Suivant</p></a></div>
 	
   <?php while ( $this->have_groups() ) : $this->the_group(); ?>
   
