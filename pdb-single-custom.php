@@ -76,7 +76,7 @@ $linkNext = esc_url(add_query_arg('pdb', $idNext, strtok($_SERVER["REQUEST_URI"]
   //specific field for the categorie "Marchés"
   if (Participants_Db::get_participant($this->participant_id)['categorie'] == 'Marchés' ) {
       $titre = Participants_Db::get_participant($this->participant_id)['titre'];
-      $filter = 'présence_sur_les_marchés=*' . $titre . '*';
+      $filter = 'présence_sur_les_marchés~' . $titre;
       $acteurs = Participants_Db::get_participant_list( array('fields' => 'titre, categorie, inactif','filter' => $filter ) );
       if (!empty($acteurs)) {
           $acteursPresents = '';
